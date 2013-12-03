@@ -20,16 +20,6 @@
 #include "datasourceapi.h"
 
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-DataSource * DataSourceManager_get_source(DataSourceManager * mgr, const char * name) __attribute__ ((nonnull(1, 2)));
-
-#ifdef __cplusplus
-} /* extern "C" { */
-#endif
-
 namespace sharemind  {
 
 class DataSource;

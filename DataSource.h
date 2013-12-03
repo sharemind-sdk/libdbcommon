@@ -19,18 +19,6 @@
 #include "datasourceapi.h"
 
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-const char * DataSource_name(DataSource * src) __attribute__ ((nonnull(1)));
-const char * DataSource_module(DataSource * src) __attribute__ ((nonnull(1)));
-const char * DataSource_conf(DataSource * src) __attribute__ ((nonnull(1)));
-
-#ifdef __cplusplus
-} /* extern "C" { */
-#endif
-
 namespace sharemind  {
 
 class DataSource {
