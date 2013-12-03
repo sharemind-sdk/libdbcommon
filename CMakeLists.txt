@@ -6,22 +6,30 @@
 # without the written consent of the copyright owner. The usage of this
 # code is subject to the appropriate license agreement.
 #
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+PROJECT(SHAREMIND_DBCOMMON)
 
-# The dbcommon library
-
-
-# Find required libraries:
-#SET(Boost_USE_STATIC_RUNTIME OFF)
+FIND_PACKAGE(SharemindLibmodapi REQUIRED)
+FIND_PACKAGE(SharemindLibvm REQUIRED)
 
 INCLUDE_DIRECTORIES(
-    ${Boost_INCLUDE_DIRS}
+    ${SharemindLibmodapi_INCLUDE_DIRS}
+    ${SharemindLibvm_INCLUDE_DIRS}
 )
-
 
 # Set the default log level and reconfigure headers accordingly.
 # Possible values: WARNING, NORMAL, DEBUG, FULLDEBUG.
-ADD_DEFINITIONS("-DSHAREMIND_LOGLEVEL_${LOGLEVEL}" "-D__STDC_LIMIT_MACROS")
+ADD_DEFINITIONS(
+    "-DSHAREMIND_LOGLEVEL_${SHAREMIND_LOGLEVEL}"
+    "-D__STDC_LIMIT_MACROS"
+    ${SharemindLibmodapi_DEFINITIONS}
+    ${SharemindLibvm_DEFINITIONS}
+)
 
+SET(DBCOMMON_EXTERNAL_LIBS
+    ${SharemindLibmodapi_LIBRARIES}
+    ${SharemindLibvm_LIBRARIES}
+)
 
 SET(DBCOMMON_SOURCES
     ModuleLoader/LastError.cpp
@@ -48,20 +56,7 @@ ENDIF()
 ADD_LIBRARY(sharemind_dbcommon ${SHAREMIND_DBCOMMON_LINKING_MODE} ${DBCOMMON_SOURCES} ${DBCOMMON_HEADERS})
 SET_TARGET_PROPERTIES(sharemind_dbcommon PROPERTIES
                       COMPILE_FLAGS "-fPIC -O2 -ggdb")
-
-MACRO(SHAREMIND_DBCOMMON_TARGETLIB libname)
-  IF(TARGET "lib${libname}")
-    SET(SHAREMIND_DBCOMMON_TARGETLIB_${libname} "lib${libname}")
-  ELSE()
-    SET(SHAREMIND_DBCOMMON_TARGETLIB_${libname} "-L${CMAKE_PREFIX_PATH}/lib" "sharemind_${libname}")
-  ENDIF()
-ENDMACRO()
-SHAREMIND_DBCOMMON_TARGETLIB(modapi)
-
-# use these libraries during linking
-TARGET_LINK_LIBRARIES(sharemind_dbcommon
-    ${SHAREMIND_DBCOMMON_TARGETLIB_modapi}
-)
+TARGET_LINK_LIBRARIES(sharemind_dbcommon ${DBCOMMON_EXTERNAL_LIBS})
 
 # Install the library and headers
 #INSTALL(TARGETS sharemind_dbcommon
