@@ -57,11 +57,11 @@ public: /* Methods: */
 
 private: /* Fields: */
 
-    std::set<std::string> m_reqSignatures;
-
     SharemindModuleApi * m_modapi;
     Modules * m_modules;
     ModuleSyscallMap m_moduleSyscallMap;
+
+    std::set<std::string> m_reqSignatures;
 
 }; /* class ModuleLoader { */
 
