@@ -9,6 +9,14 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 PROJECT(SHAREMIND_DBCOMMON)
 
+ADD_COMPILE_OPTIONS(
+  "-Wall" "-Wextra" "-O2"
+  "$<$<NOT:$<STREQUAL:$<CONFIGURATION>,Release>>:-ggdb>"
+  "$<$<NOT:$<STREQUAL:$<CONFIGURATION>,Release>>:-fno-omit-frame-pointer>"
+  "$<$<STREQUAL:$<CONFIGURATION>,Release>:-DNDEBUG>"
+  "$<$<STREQUAL:$<CONFIGURATION>,Release>:-fomit-frame-pointer>"
+)
+
 FIND_PACKAGE(Boost REQUIRED)
 FIND_PACKAGE(SharemindLibmodapi REQUIRED)
 FIND_PACKAGE(SharemindLibvm REQUIRED)
@@ -19,8 +27,6 @@ INCLUDE_DIRECTORIES(
     ${SharemindLibvm_INCLUDE_DIRS}
 )
 
-# Set the default log level and reconfigure headers accordingly.
-# Possible values: WARNING, NORMAL, DEBUG, FULLDEBUG.
 ADD_DEFINITIONS(
     "-DSHAREMIND_LOGLEVEL_${SHAREMIND_LOGLEVEL}"
     "-D__STDC_LIMIT_MACROS"
@@ -50,20 +56,15 @@ SET(DBCOMMON_HEADERS
     datasourceapi.h
 )
 
-# compile the library
 IF(NOT SHAREMIND_DBCOMMON_LINKING_MODE)
     SET(SHAREMIND_DBCOMMON_LINKING_MODE STATIC)
 ENDIF()
-
 ADD_LIBRARY(sharemind_dbcommon ${SHAREMIND_DBCOMMON_LINKING_MODE} ${DBCOMMON_SOURCES} ${DBCOMMON_HEADERS})
-SET_TARGET_PROPERTIES(sharemind_dbcommon PROPERTIES
-                      COMPILE_FLAGS "-fPIC -O2 -ggdb")
 TARGET_LINK_LIBRARIES(sharemind_dbcommon ${DBCOMMON_EXTERNAL_LIBS})
 
-# Install the library and headers
-#INSTALL(TARGETS sharemind_dbcommon
-#        ARCHIVE DESTINATION "lib")
-#
-#INSTALL(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/"
-#        DESTINATION "include/sharemind/dbcommon"
-#        FILES_MATCHING PATTERN "*.h")
+INSTALL(TARGETS sharemind_dbcommon
+        LIBRARY DESTINATION "lib"
+        ARCHIVE DESTINATION "lib")
+INSTALL(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/"
+        DESTINATION "include/sharemind/dbcommon"
+        FILES_MATCHING PATTERN "*.h")
