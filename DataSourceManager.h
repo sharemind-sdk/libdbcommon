@@ -27,7 +27,7 @@ class DataSource;
 class DataSourceManager {
 private: /* Types: */
 
-    typedef ::DataSourceManager DataSourceManagerWrapper;
+    typedef SharemindDataSourceManager DataSourceManagerWrapper;
     typedef boost::ptr_map<std::string, DataSource> DataSourceMap;
 
 public: /* Methods: */

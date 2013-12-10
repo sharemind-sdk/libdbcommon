@@ -24,31 +24,31 @@ extern "C" {
 #endif
 
 /** Forward declarations: */
-struct DataSourceManager_;
-typedef DataSourceManager_ DataSourceManager;
-struct DataSource_;
-typedef DataSource_ DataSource;
+struct SharemindDataSourceManager_;
+typedef SharemindDataSourceManager_ SharemindDataSourceManager;
+struct SharemindDataSource_;
+typedef SharemindDataSource_ SharemindDataSource;
 
 /*******************************************************************************
-    DataSourceManager
+    SharemindDataSourceManager
 *******************************************************************************/
 
-struct DataSourceManager_ {
+struct SharemindDataSourceManager_ {
     SHAREMIND_ICONST void * SHAREMIND_ICONST internal;
 
-    DataSource * (*get_source)(DataSourceManager * mgr, const char * name);
+    SharemindDataSource * (*get_source)(SharemindDataSourceManager * mgr, const char * name);
 };
 
 /*******************************************************************************
-    DataSource
+    SharemindDataSource
 *******************************************************************************/
 
-struct DataSource_ {
+struct SharemindDataSource_ {
     SHAREMIND_ICONST void * SHAREMIND_ICONST internal;
 
-    const char * (* name)(DataSource * src);
-    const char * (* module)(DataSource * src);
-    const char * (* conf)(DataSource * src);
+    const char * (* name)(SharemindDataSource * src);
+    const char * (* module)(SharemindDataSource * src);
+    const char * (* conf)(SharemindDataSource * src);
 };
 
 #ifdef __cplusplus

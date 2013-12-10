@@ -17,21 +17,21 @@
 extern "C" {
 #endif
 
-const char * DataSource_name(DataSource * src) {
+const char * SharemindDataSource_name(SharemindDataSource * src) {
     assert(src);
     assert(src->internal);
 
     return static_cast<sharemind::DataSource *>(src->internal)->name().c_str();
 }
 
-const char * DataSource_module(DataSource * src) {
+const char * SharemindDataSource_module(SharemindDataSource * src) {
     assert(src);
     assert(src->internal);
 
     return static_cast<sharemind::DataSource *>(src->internal)->module().c_str();
 }
 
-const char * DataSource_conf(DataSource * src) {
+const char * SharemindDataSource_conf(SharemindDataSource * src) {
     assert(src);
     assert(src->internal);
 
@@ -50,9 +50,9 @@ DataSource::DataSource(const std::string & name, const std::string & module, con
     , m_conf(conf)
 {
     m_wrapper.internal = this;
-    m_wrapper.name = &DataSource_name;
-    m_wrapper.module = &DataSource_module;
-    m_wrapper.conf = &DataSource_conf;
+    m_wrapper.name = &SharemindDataSource_name;
+    m_wrapper.module = &SharemindDataSource_module;
+    m_wrapper.conf = &SharemindDataSource_conf;
 }
 
 } /* namespace sharemind { */

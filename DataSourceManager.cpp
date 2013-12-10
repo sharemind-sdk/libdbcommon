@@ -16,7 +16,7 @@
 extern "C" {
 #endif
 
-DataSource * DataSourceManager_get_source(DataSourceManager * mgr, const char * name) {
+SharemindDataSource * SharemindDataSourceManager_get_source(SharemindDataSourceManager * mgr, const char * name) {
     assert(mgr);
     assert(mgr->internal);
     assert(name);
@@ -38,7 +38,7 @@ namespace sharemind  {
 
 DataSourceManager::DataSourceManager() {
     m_wrapper.internal = this;
-    m_wrapper.get_source = &DataSourceManager_get_source;
+    m_wrapper.get_source = &SharemindDataSourceManager_get_source;
 }
 
 bool DataSourceManager::addDataSource(const std::string & name, const std::string & dbModule, const std::string & config) {

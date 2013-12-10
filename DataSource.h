@@ -24,7 +24,7 @@ namespace sharemind  {
 class DataSource {
 private: /* Types: */
 
-    typedef ::DataSource DataSourceWrapper;
+    typedef SharemindDataSource DataSourceWrapper;
 
 public: /* Methods: */
 
