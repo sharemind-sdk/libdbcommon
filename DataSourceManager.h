@@ -15,7 +15,7 @@
 #endif
 
 #include <string>
-#include <sharemind/miner/VirtualMachine/scopedobjectmap.h>
+#include <sharemind/common/ScopedObjectMap.h>
 
 #include "datasourceapi.h"
 
