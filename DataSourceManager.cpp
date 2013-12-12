@@ -7,6 +7,8 @@
  * code is subject to the appropriate license agreement.
  */
 
+#include <cassert>
+
 #define SHAREMIND_INTERNAL__
 #include "DataSourceManager.h"
 

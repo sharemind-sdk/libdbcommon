@@ -15,7 +15,7 @@
 #endif
 
 #include <string>
-#include <boost/ptr_container/ptr_map.hpp>
+#include <sharemind/miner/VirtualMachine/scopedobjectmap.h>
 
 #include "datasourceapi.h"
 
@@ -28,7 +28,7 @@ class DataSourceManager {
 private: /* Types: */
 
     typedef SharemindDataSourceManager DataSourceManagerWrapper;
-    typedef boost::ptr_map<std::string, DataSource> DataSourceMap;
+    typedef ScopedObjectMap<std::string, DataSource> DataSourceMap;
 
 public: /* Methods: */
 
