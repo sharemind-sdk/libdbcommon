@@ -41,7 +41,10 @@ public: /* Methods: */
     ~ModuleLoader();
 
     SharemindModule * addModule(const std::string & filename, const std::string & config = std::string());
-    bool hasModule(const std::string & module) const;
+
+    inline bool hasModule(const std::string & module) const {
+        return m_moduleSyscallMap.find(module) != m_moduleSyscallMap.end();
+    }
 
     const SharemindSyscallBinding * getSyscall(const std::string & module, const std::string & signature) const;
 

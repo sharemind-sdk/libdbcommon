@@ -162,10 +162,6 @@ SharemindModule * ModuleLoader::addModule(const std::string & filename, const st
     return &m;
 }
 
-bool ModuleLoader::hasModule(const std::string & module) const {
-    return m_moduleSyscallMap.find(module) != m_moduleSyscallMap.end();
-}
-
 const SharemindSyscallBinding * ModuleLoader::getSyscall(const std::string & module, const std::string & signature) const {
     ModuleSyscallMap::const_iterator msit = m_moduleSyscallMap.find(module);
     if (msit == m_moduleSyscallMap.end())
