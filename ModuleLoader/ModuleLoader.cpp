@@ -35,12 +35,17 @@ const std::string OomAfterMissingSyscall = "Out of memory after failing to load 
 
 
 ModuleLoader::ModuleLoader(const std::set<std::string> & signatures)
-    : m_modules(new Modules(this))
-    , m_reqSignatures(signatures)
+    : m_reqSignatures(signatures)
 {
-    m_modapi = SharemindModuleApi_new();
-    if (!m_modapi)
-        throw std::bad_alloc();
+    m_modules = new Modules(this);
+    try {
+        m_modapi = SharemindModuleApi_new();
+        if (!m_modapi)
+            throw std::bad_alloc();
+    } catch (...) {
+        delete m_modules;
+        throw;
+    }
 }
 
 ModuleLoader::~ModuleLoader() {
