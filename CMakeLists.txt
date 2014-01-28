@@ -41,17 +41,12 @@ SET(DBCOMMON_EXTERNAL_LIBS
 )
 
 SET(DBCOMMON_SOURCES
-    ModuleLoader/LastError.cpp
-    ModuleLoader/ModuleLoader.cpp
-    ModuleLoader/Modules.cpp
     DataSource.cpp
     DataSourceManager.cpp
 )
 
 SET(DBCOMMON_HEADERS
-    ModuleLoader/LastError.h
     ModuleLoader/ModuleLoader.h
-    ModuleLoader/Modules.h
     DataSource.h
     DataSourceManager.h
     datasourceapi.h
