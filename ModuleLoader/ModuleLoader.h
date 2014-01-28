@@ -13,9 +13,9 @@
 #include <cassert>
 #include <map>
 #include <set>
-#include <string>
-#include <boost/ptr_container/ptr_map.hpp>
+#include <sharemind/common/ScopedObjectMap.h>
 #include <sharemind/libvm/libvm.h>
+#include <string>
 
 #include "LastError.h"
 
@@ -32,7 +32,7 @@ class ModuleLoader: public LastError {
 
 private: /* Types: */
 
-    typedef boost::ptr_map<std::string, SharemindSyscallBinding> SyscallMap;
+    typedef ScopedObjectMap<std::string, SharemindSyscallBinding> SyscallMap;
     typedef std::map<std::string, SyscallMap> ModuleSyscallMap;
 
 public: /* Methods: */
