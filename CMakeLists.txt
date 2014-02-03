@@ -46,10 +46,10 @@ SET(DBCOMMON_SOURCES
 )
 
 SET(DBCOMMON_HEADERS
-    ModuleLoader/ModuleLoader.h
     DataSource.h
     DataSourceManager.h
     datasourceapi.h
+    ModuleLoader.h
 )
 
 IF(NOT SHAREMIND_DBCOMMON_LINKING_MODE)
