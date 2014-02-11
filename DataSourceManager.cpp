@@ -27,7 +27,7 @@ SharemindDataSource * SharemindDataSourceManager_get_source(SharemindDataSourceM
 
     sharemind::DataSource * src = m->getDataSource(name);
     if (!src)
-        return NULL;
+        return nullptr;
 
     return src->getWrapper();
 }
@@ -56,7 +56,7 @@ bool DataSourceManager::addDataSource(const std::string & name, const std::strin
 DataSource * DataSourceManager::getDataSource(const std::string & name) {
     DataSourceMap::iterator it = m_dataSources.find(name);
     if (it == m_dataSources.end())
-        return NULL;
+        return nullptr;
 
     return it->second;
 }

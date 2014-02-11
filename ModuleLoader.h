@@ -66,7 +66,7 @@ public: /* Methods: */
             m_logger.error()
                     << "Error while loading module \"" << filename << "\": "
                     << SharemindModuleApi_get_last_error_string(m_modApi);
-            return NULL;
+            return nullptr;
         }
 
         try {
@@ -142,10 +142,10 @@ public: /* Methods: */
             m_logger.error() << "Error loading database module " << filename
                              << ": " << e.what();
             SharemindModule_free(m);
-            return NULL;
+            return nullptr;
         } catch (const GracefulException &) {
             SharemindModule_free(m);
-            return NULL;
+            return nullptr;
         }
     }
 
@@ -159,19 +159,19 @@ public: /* Methods: */
     {
         ModuleSyscallMap::const_iterator msit = m_moduleSyscallMap.find(module);
         if (msit == m_moduleSyscallMap.end())
-            return NULL;
+            return nullptr;
 
         const SyscallMap & syscallMap = msit->second;
         SyscallMap::const_iterator sit = syscallMap.find(signature);
         if (sit == syscallMap.end())
-            return NULL;
+            return nullptr;
 
         return sit->second;
     }
 
     inline bool setModuleFacility(const char * name,
                                   void * facility,
-                                  void * context = NULL)
+                                  void * context = nullptr)
     {
         assert(name);
         return SharemindModuleApi_set_module_facility(m_modApi,
