@@ -124,7 +124,9 @@ public: /* Methods: */
                         scBinding->wrapper = SharemindSyscall_get_wrapper(sc);
                         scBinding->moduleHandle = SharemindModule_get_handle(m);
 
+                        #ifndef NDEBUG
                         std::pair<SyscallMap::iterator, bool> rv =
+                        #endif
                                 syscallMap.insert(scName, scBinding);
                         assert(rv.second);
                     } catch (...) {
