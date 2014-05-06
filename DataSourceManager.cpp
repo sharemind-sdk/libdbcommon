@@ -23,13 +23,17 @@ SharemindDataSource * SharemindDataSourceManager_get_source(SharemindDataSourceM
     assert(mgr->internal);
     assert(name);
 
-    sharemind::DataSourceManager * m = static_cast<sharemind::DataSourceManager *>(mgr->internal);
+    try {
+        sharemind::DataSourceManager * m = static_cast<sharemind::DataSourceManager *>(mgr->internal);
 
-    sharemind::DataSource * src = m->getDataSource(name);
-    if (!src)
+        sharemind::DataSource * src = m->getDataSource(name);
+        if (!src)
+            return nullptr;
+
+        return src->getWrapper();
+    } catch (...) {
         return nullptr;
-
-    return src->getWrapper();
+    }
 }
 
 #ifdef __cplusplus
