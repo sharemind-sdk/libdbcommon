@@ -14,15 +14,13 @@
 #error SHAREMIND_INTERNAL__ not defined
 #endif
 
-#include <string>
 #include <sharemind/common/ScopedObjectMap.h>
-
+#include <string>
+#include "DataSource.h"
 #include "datasourceapi.h"
 
 
 namespace sharemind  {
-
-class DataSource;
 
 class DataSourceManager {
 private: /* Types: */

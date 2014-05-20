@@ -48,7 +48,7 @@ DataSourceManager::DataSourceManager() {
 }
 
 bool DataSourceManager::addDataSource(const std::string & name, const std::string & dbModule, const std::string & config) {
-    DataSource * ds = new DataSource(name, dbModule, config);
+    DataSource * const ds = new DataSource(name, dbModule, config);
     if (!m_dataSources.insert(const_cast<std::string &>(name), ds).second) {
         delete ds;
         return false;
@@ -58,7 +58,7 @@ bool DataSourceManager::addDataSource(const std::string & name, const std::strin
 }
 
 DataSource * DataSourceManager::getDataSource(const std::string & name) {
-    DataSourceMap::iterator it = m_dataSources.find(name);
+    const DataSourceMap::iterator it = m_dataSources.find(name);
     if (it == m_dataSources.end())
         return nullptr;
 
