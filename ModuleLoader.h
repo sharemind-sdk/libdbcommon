@@ -40,7 +40,7 @@ public: /* Methods: */
     ModuleLoader(const std::set<std::string> & signatures,
                  Logger & logger)
         : m_reqSignatures(signatures)
-        , m_logger(logger.wrap("ModuleLoader: "))
+        , m_logger(logger, "ModuleLoader:")
     {
         m_modApi = SharemindModuleApi_new();
         if (unlikely(!m_modApi))
