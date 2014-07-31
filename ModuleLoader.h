@@ -15,6 +15,7 @@
 #include <cstring>
 #include <map>
 #include <set>
+#include <sharemind/common/Logger/Logger.h>
 #include <sharemind/common/ScopedObjectMap.h>
 #include <sharemind/libvm/libvm.h>
 #include <sharemind/likely.h>
@@ -26,7 +27,6 @@ namespace sharemind {
 
 namespace moduleLoader {
 
-template <class Logger>
 class ModuleLoader {
 
 private: /* Types: */
@@ -38,7 +38,7 @@ private: /* Types: */
 public: /* Methods: */
 
     ModuleLoader(const std::set<std::string> & signatures,
-                 Logger & logger)
+                 const Logger & logger)
         : m_reqSignatures(signatures)
         , m_logger(logger, "ModuleLoader:")
     {
@@ -195,7 +195,7 @@ private: /* Fields: */
 
     StringSet m_reqSignatures;
 
-    typename Logger::Wrapped m_logger;
+    const Logger m_logger;
 
 }; /* class ModuleLoader { */
 
