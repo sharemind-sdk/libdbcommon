@@ -13,9 +13,9 @@
 #include <algorithm>
 #include <cassert>
 #include <cstring>
+#include <LogHard/Logger.h>
 #include <map>
 #include <set>
-#include <sharemind/common/Logger/Logger.h>
 #include <sharemind/common/ScopedObjectMap.h>
 #include <sharemind/libvm/libvm.h>
 #include <sharemind/likely.h>
@@ -38,7 +38,7 @@ private: /* Types: */
 public: /* Methods: */
 
     ModuleLoader(const std::set<std::string> & signatures,
-                 const Logger & logger)
+                 const LogHard::Logger & logger)
         : m_reqSignatures(signatures)
         , m_logger(logger, "ModuleLoader:")
     {
@@ -195,7 +195,7 @@ private: /* Fields: */
 
     StringSet m_reqSignatures;
 
-    const Logger m_logger;
+    const LogHard::Logger m_logger;
 
 }; /* class ModuleLoader { */
 
