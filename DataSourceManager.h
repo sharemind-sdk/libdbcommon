@@ -14,7 +14,7 @@
 #error SHAREMIND_INTERNAL__ not defined
 #endif
 
-#include <sharemind/common/ScopedObjectMap.h>
+#include <sharemind/ScopedObjectMap.h>
 #include <string>
 #include "DataSource.h"
 #include "datasourceapi.h"

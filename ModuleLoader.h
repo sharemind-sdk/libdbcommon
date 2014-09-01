@@ -16,9 +16,9 @@
 #include <LogHard/Logger.h>
 #include <map>
 #include <set>
-#include <sharemind/common/ScopedObjectMap.h>
 #include <sharemind/libvm/libvm.h>
 #include <sharemind/likely.h>
+#include <sharemind/ScopedObjectMap.h>
 #include <string>
 #include <vector>
 
