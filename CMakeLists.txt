@@ -22,6 +22,7 @@ FIND_PACKAGE(LogHard REQUIRED)
 FIND_PACKAGE(SharemindCxxHeaders REQUIRED)
 FIND_PACKAGE(SharemindLibmodapi REQUIRED)
 FIND_PACKAGE(SharemindLibvm REQUIRED)
+FIND_PACKAGE(SharemindVmGlobals REQUIRED)
 
 INCLUDE_DIRECTORIES(
     ${Boost_INCLUDE_DIRS}
@@ -29,6 +30,7 @@ INCLUDE_DIRECTORIES(
     ${SharemindCxxHeaders_INCLUDE_DIRS}
     ${SharemindLibmodapi_INCLUDE_DIRS}
     ${SharemindLibvm_INCLUDE_DIRS}
+    ${SharemindVmGlobals_INCLUDE_DIRS}
 )
 INCLUDE_DIRECTORIES(BEFORE "${CMAKE_CURRENT_SOURCE_DIR}/../../")
 
@@ -38,6 +40,7 @@ ADD_DEFINITIONS(
     ${SharemindCxxHeaders_DEFINITIONS}
     ${SharemindLibmodapi_DEFINITIONS}
     ${SharemindLibvm_DEFINITIONS}
+    ${SharemindVmGlobals_DEFINITIONS}
 )
 
 SET(DBCOMMON_EXTERNAL_LIBS
@@ -45,6 +48,7 @@ SET(DBCOMMON_EXTERNAL_LIBS
     ${SharemindCxxHeaders_LIBRARIES}
     ${SharemindLibmodapi_LIBRARIES}
     ${SharemindLibvm_LIBRARIES}
+    ${SharemindVmGlobals_LIBRARIES}
 )
 
 SET(DBCOMMON_SOURCES
