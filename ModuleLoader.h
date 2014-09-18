@@ -42,7 +42,8 @@ public: /* Methods: */
         : m_reqSignatures(signatures)
         , m_logger(logger, "ModuleLoader:")
     {
-        m_modApi = SharemindModuleApi_new();
+        /// \todo Throw a better exception
+        m_modApi = SharemindModuleApi_new(nullptr, nullptr);
         if (unlikely(!m_modApi))
             throw std::bad_alloc();
     }
@@ -59,18 +60,19 @@ public: /* Methods: */
                                 const std::string & config = std::string())
     {
         struct GracefulException {};
-        SharemindModule * const m = SharemindModule_new(m_modApi,
-                                                        filename.c_str(),
-                                                        config.c_str());
+        SharemindModule * const m =
+                SharemindModuleApi_newModule(m_modApi,
+                                             filename.c_str(),
+                                             config.c_str());
         if (unlikely(!m)) {
             m_logger.error()
                     << "Error while loading module \"" << filename << "\": "
-                    << SharemindModuleApi_get_last_error_string(m_modApi);
+                    << SharemindModuleApi_lastErrorString(m_modApi);
             return nullptr;
         }
 
         try {
-            SharemindModuleApiError e = SharemindModule_mod_init(m);
+            SharemindModuleApiError e = SharemindModule_init(m);
             if (unlikely(e != SHAREMIND_MODULE_API_OK)) {
                 m_logger.error()
                         << "Error initializing module: Module returned "
@@ -78,7 +80,7 @@ public: /* Methods: */
                 throw GracefulException();
             }
 
-            const char * const moduleName = SharemindModule_get_name(m);
+            const char * const moduleName = SharemindModule_name(m);
             assert(moduleName);
             if (unlikely(m_moduleSyscallMap.count(moduleName))) {
                 m_logger.error() << "Module name \"" << moduleName
@@ -87,18 +89,18 @@ public: /* Methods: */
             }
 
             /* Load system calls */
-            const size_t numSyscalls = SharemindModule_get_num_syscalls(m);
+            const size_t numSyscalls = SharemindModule_numSyscalls(m);
             if (unlikely(numSyscalls != m_reqSignatures.size())) {
                 m_logger.error() << "Invalid number of system calls in module!";
                 throw GracefulException();
             }
             for (size_t i = 0u; i < numSyscalls; i++) {
                 const SharemindSyscall * const sc =
-                        SharemindModule_get_syscall(m, i);
+                        SharemindModule_syscall(m, i);
                 assert(sc);
 
                 /* Check if system call signature is valid */
-                const char * const scName = SharemindSyscall_get_signature(sc);
+                const char * const scName = SharemindSyscall_signature(sc);
                 assert(scName);
                 if (unlikely(!m_reqSignatures.count(scName))) {
                     m_logger.error() << "The system call \"" << scName
@@ -112,17 +114,17 @@ public: /* Methods: */
             try {
                 for (size_t i = 0u; i < numSyscalls; i++) {
                     const SharemindSyscall * const sc =
-                            SharemindModule_get_syscall(m, i);
+                            SharemindModule_syscall(m, i);
                     assert(sc);
                     const char * const scName =
-                            SharemindSyscall_get_signature(sc);
+                            SharemindSyscall_signature(sc);
                     assert(scName);
 
                     SharemindSyscallBinding * const scBinding =
                             new SharemindSyscallBinding();
                     try {
-                        scBinding->wrapper = SharemindSyscall_get_wrapper(sc);
-                        scBinding->moduleHandle = SharemindModule_get_handle(m);
+                        scBinding->wrapper = SharemindSyscall_wrapper(sc);
+                        scBinding->moduleHandle = SharemindModule_handle(m);
 
                         #ifndef NDEBUG
                         std::pair<SyscallMap::iterator, bool> rv =
@@ -171,20 +173,22 @@ public: /* Methods: */
         return sit->second;
     }
 
-    inline bool setModuleFacility(const char * name,
+    inline void setModuleFacility(const char * name,
                                   void * facility,
                                   void * context = nullptr)
     {
         assert(name);
-        return SharemindModuleApi_set_module_facility(m_modApi,
-                                                      name,
-                                                      facility,
-                                                      context);
+        const auto r = SharemindModuleApi_setModuleFacility(m_modApi,
+                                                            name,
+                                                            facility,
+                                                            context);
+        if (r != SHAREMIND_MODULE_API_OK)
+            throw std::bad_alloc(); /// \todo Throw a better exception
     }
 
-    inline const SharemindFacility * getModuleFacility(const char * name) {
+    inline const SharemindFacility * moduleFacility(const char * name) {
         assert(name);
-        return SharemindModuleApi_get_module_facility(m_modApi, name);
+        return SharemindModuleApi_moduleFacility(m_modApi, name);
     }
 
 private: /* Fields: */
