@@ -32,7 +32,7 @@ class ModuleLoader {
 private: /* Types: */
 
     typedef std::set<std::string> StringSet;
-    typedef ScopedObjectMap<std::string, SharemindSyscallBinding> SyscallMap;
+    typedef ScopedObjectMap<std::string, SharemindSyscallWrapper> SyscallMap;
     typedef std::map<std::string, SyscallMap> ModuleSyscallMap;
 
 public: /* Methods: */
@@ -120,12 +120,10 @@ public: /* Methods: */
                             SharemindSyscall_signature(sc);
                     assert(scName);
 
-                    SharemindSyscallBinding * const scBinding =
-                            new SharemindSyscallBinding();
+                    SharemindSyscallWrapper * const scBinding =
+                            new SharemindSyscallWrapper(
+                                SharemindSyscall_wrapper(sc));
                     try {
-                        scBinding->wrapper = SharemindSyscall_wrapper(sc);
-                        scBinding->moduleHandle = SharemindModule_handle(m);
-
                         #ifndef NDEBUG
                         std::pair<SyscallMap::iterator, bool> rv =
                         #endif
@@ -157,20 +155,20 @@ public: /* Methods: */
         return m_moduleSyscallMap.find(module) != m_moduleSyscallMap.end();
     }
 
-    const SharemindSyscallBinding * getSyscall(const std::string & module,
-                                               const std::string & signature)
+    SharemindSyscallWrapper getSyscall(const std::string & module,
+                                       const std::string & signature)
             const
     {
         ModuleSyscallMap::const_iterator msit = m_moduleSyscallMap.find(module);
         if (msit == m_moduleSyscallMap.end())
-            return nullptr;
+            return { nullptr, nullptr };
 
         const SyscallMap & syscallMap = msit->second;
         SyscallMap::const_iterator sit = syscallMap.find(signature);
         if (sit == syscallMap.end())
-            return nullptr;
+            return { nullptr, nullptr };
 
-        return sit->second;
+        return *(sit->second);
     }
 
     inline void setModuleFacility(const char * name,
