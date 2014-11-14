@@ -43,7 +43,7 @@ public: /* Methods: */
         , m_logger(logger, "ModuleLoader:")
     {
         /// \todo Throw a better exception
-        m_modApi = SharemindModuleApi_new(nullptr, nullptr);
+        m_modApi = SharemindModuleApi_new(nullptr, nullptr, nullptr);
         if (unlikely(!m_modApi))
             throw std::bad_alloc();
     }
