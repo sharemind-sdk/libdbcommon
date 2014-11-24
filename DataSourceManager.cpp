@@ -49,7 +49,7 @@ DataSourceManager::DataSourceManager() {
 
 bool DataSourceManager::addDataSource(const std::string & name, const std::string & dbModule, const std::string & config) {
     DataSource * const ds = new DataSource(name, dbModule, config);
-    if (!m_dataSources.insert(const_cast<std::string &>(name), ds).second) {
+    if (!m_dataSources.insert(name, ds).second) {
         delete ds;
         return false;
     }
