@@ -7,66 +7,63 @@
  * code is subject to the appropriate license agreement.
  */
 
-#include <cassert>
-
 #define SHAREMIND_INTERNAL__
+
 #include "DataSourceManager.h"
 
+#include <cassert>
 #include "DataSource.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
-SharemindDataSource * SharemindDataSourceManager_get_source(SharemindDataSourceManager * mgr, const char * name) {
+extern "C" {
+
+SharemindDataSource * SharemindDataSourceManager_get_source(
+        SharemindDataSourceManager * mgr,
+        const char * name)
+{
     assert(mgr);
     assert(mgr->internal);
     assert(name);
 
     try {
-        sharemind::DataSourceManager * m = static_cast<sharemind::DataSourceManager *>(mgr->internal);
-
-        sharemind::DataSource * src = m->getDataSource(name);
-        if (!src)
-            return nullptr;
-
-        return src->getWrapper();
+        sharemind::DataSourceManager & m =
+                *static_cast<sharemind::DataSourceManager *>(mgr->internal);
+        sharemind::DataSource * const src = m.getDataSource(name);
+        return src ? src->getWrapper() : nullptr;
     } catch (...) {
         return nullptr;
     }
 }
 
-#ifdef __cplusplus
 } /* extern "C" { */
-#endif
+
 
 namespace sharemind  {
 
-DataSourceManager::DataSourceManager() {
-    m_wrapper.internal = this;
-    m_wrapper.get_source = &SharemindDataSourceManager_get_source;
-}
+DataSourceManager::DataSourceManager()
+    : m_wrapper{this,  &SharemindDataSourceManager_get_source}
+{}
 
-bool DataSourceManager::addDataSource(const std::string & name, const std::string & dbModule, const std::string & config) {
+bool DataSourceManager::addDataSource(const std::string & name,
+                                      const std::string & dbModule,
+                                      const std::string & config)
+{
     DataSource * const ds = new DataSource(name, dbModule, config);
-    if (!m_dataSources.insert(name, ds).second) {
+    try {
+        return m_dataSources.insert(name, ds).second
+               || (delete ds, false);
+    } catch (...) {
         delete ds;
-        return false;
+        throw;
     }
-
-    return true;
 }
 
 DataSource * DataSourceManager::getDataSource(const std::string & name) {
     const DataSourceMap::iterator it = m_dataSources.find(name);
-    if (it == m_dataSources.end())
-        return nullptr;
-
-    return it->second;
+    return (it != m_dataSources.end()) ? it->second : nullptr;
 }
 
-bool DataSourceManager::hasDataSource(const std::string & name) const {
-    return m_dataSources.find(name) != m_dataSources.end();
-}
+bool DataSourceManager::hasDataSource(const std::string & name) const
+{ return m_dataSources.find(name) != m_dataSources.end(); }
 
 } /* namespace sharemind { */
