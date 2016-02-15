@@ -19,7 +19,7 @@
 
 #include <cassert>
 
-#define SHAREMIND_INTERNAL__
+#define SHAREMIND_INTERNAL_
 #include "DataSource.h"
 
 
