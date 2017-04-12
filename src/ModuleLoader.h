@@ -25,10 +25,12 @@
 #include <cstring>
 #include <LogHard/Logger.h>
 #include <map>
+#include <memory>
 #include <set>
+#include <sharemind/DebugOnly.h>
 #include <sharemind/libvm/libvm.h>
 #include <sharemind/likely.h>
-#include <sharemind/ScopedObjectMap.h>
+#include <sharemind/MakeUnique.h>
 #include <string>
 #include <vector>
 
@@ -42,7 +44,8 @@ class ModuleLoader {
 private: /* Types: */
 
     typedef std::set<std::string> StringSet;
-    typedef ScopedObjectMap<std::string, SharemindSyscallWrapper> SyscallMap;
+    using SyscallMap =
+            std::map<std::string, std::unique_ptr<SharemindSyscallWrapper> >;
     typedef std::map<std::string, SyscallMap> ModuleSyscallMap;
 
 public: /* Methods: */
@@ -130,19 +133,12 @@ public: /* Methods: */
                             SharemindSyscall_signature(sc);
                     assert(scName);
 
-                    SharemindSyscallWrapper * const scBinding =
-                            new SharemindSyscallWrapper(
-                                SharemindSyscall_wrapper(sc));
-                    try {
-                        #ifndef NDEBUG
-                        std::pair<SyscallMap::iterator, bool> rv =
-                        #endif
-                                syscallMap.insert(scName, scBinding);
-                        assert(rv.second);
-                    } catch (...) {
-                        delete scBinding;
-                        throw;
-                    }
+                    SHAREMIND_DEBUG_ONLY(auto const rv =)
+                            syscallMap.emplace(
+                                scName,
+                                makeUnique<SharemindSyscallWrapper>(
+                                    SharemindSyscall_wrapper(sc)));
+                    assert(rv.second);
                 }
                 m_modules.push_back(m);
                 return m;

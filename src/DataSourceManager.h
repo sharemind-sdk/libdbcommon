@@ -24,7 +24,8 @@
 #error SHAREMIND_INTERNAL_ not defined
 #endif
 
-#include <sharemind/ScopedObjectMap.h>
+#include <map>
+#include <memory>
 #include <string>
 #include "DataSource.h"
 #include "datasourceapi.h"
@@ -33,10 +34,10 @@
 namespace sharemind  {
 
 class DataSourceManager {
+
 private: /* Types: */
 
     typedef SharemindDataSourceManager DataSourceManagerWrapper;
-    typedef ScopedObjectMap<std::string, DataSource> DataSourceMap;
 
 public: /* Methods: */
 
@@ -53,7 +54,7 @@ private: /* Fields: */
 
     DataSourceManagerWrapper m_wrapper;
 
-    DataSourceMap m_dataSources;
+    std::map<std::string, std::unique_ptr<DataSource> > m_dataSources;
 
 }; /* class DataSourceManager { */
 

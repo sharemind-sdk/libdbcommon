@@ -22,6 +22,7 @@
 #include "DataSourceManager.h"
 
 #include <cassert>
+#include <sharemind/MakeUnique.h>
 #include "DataSource.h"
 
 
@@ -58,19 +59,15 @@ bool DataSourceManager::addDataSource(const std::string & name,
                                       const std::string & dbModule,
                                       const std::string & config)
 {
-    DataSource * const ds = new DataSource(name, dbModule, config);
-    try {
-        return m_dataSources.insert(name, ds).second
-               || (delete ds, false);
-    } catch (...) {
-        delete ds;
-        throw;
-    }
+    return m_dataSources.emplace(name,
+                                 makeUnique<DataSource>(name,
+                                                        dbModule,
+                                                        config)).second;
 }
 
 DataSource * DataSourceManager::getDataSource(const std::string & name) {
-    const DataSourceMap::iterator it = m_dataSources.find(name);
-    return (it != m_dataSources.end()) ? it->second : nullptr;
+    auto const it(m_dataSources.find(name));
+    return (it != m_dataSources.end()) ? it->second.get() : nullptr;
 }
 
 bool DataSourceManager::hasDataSource(const std::string & name) const
