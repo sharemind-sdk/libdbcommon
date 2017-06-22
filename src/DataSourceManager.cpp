@@ -65,7 +65,7 @@ bool DataSourceManager::addDataSource(const std::string & name,
                                                         config)).second;
 }
 
-DataSource * DataSourceManager::getDataSource(const std::string & name) {
+DataSource * DataSourceManager::getDataSource(std::string const & name) const {
     auto const it(m_dataSources.find(name));
     return (it != m_dataSources.end()) ? it->second.get() : nullptr;
 }

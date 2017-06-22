@@ -44,7 +44,7 @@ public: /* Methods: */
     DataSourceManager();
 
     bool addDataSource(const std::string & name, const std::string & dbModule, const std::string & config);
-    DataSource * getDataSource(const std::string & name);
+    DataSource * getDataSource(std::string const & name) const;
     bool hasDataSource(const std::string & name) const;
 
     inline DataSourceManagerWrapper * getWrapper() { return &m_wrapper; }
