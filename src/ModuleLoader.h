@@ -43,10 +43,8 @@ class ModuleLoader {
 
 private: /* Types: */
 
-    typedef std::set<std::string> StringSet;
     using SyscallMap =
             std::map<std::string, std::unique_ptr<SharemindSyscallWrapper> >;
-    typedef std::map<std::string, SyscallMap> ModuleSyscallMap;
 
 public: /* Methods: */
 
@@ -165,7 +163,7 @@ public: /* Methods: */
                                        const std::string & signature)
             const
     {
-        ModuleSyscallMap::const_iterator msit = m_moduleSyscallMap.find(module);
+        auto const msit(m_moduleSyscallMap.find(module));
         if (msit == m_moduleSyscallMap.end())
             return { nullptr, nullptr };
 
@@ -199,9 +197,9 @@ private: /* Fields: */
 
     std::vector<SharemindModule *> m_modules;
     SharemindModuleApi * m_modApi;
-    ModuleSyscallMap m_moduleSyscallMap;
+    std::map<std::string, SyscallMap> m_moduleSyscallMap;
 
-    StringSet m_reqSignatures;
+    std::set<std::string> m_reqSignatures;
 
     const LogHard::Logger m_logger;
 
