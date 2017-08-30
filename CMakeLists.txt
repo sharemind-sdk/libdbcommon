@@ -6,28 +6,44 @@
 # without the written consent of the copyright owner. The usage of this
 # code is subject to the appropriate license agreement.
 #
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
-PROJECT(SHAREMIND_LIBDBCOMMON)
-SET(SHAREMIND_LIBDBCOMMON_VERSION "0.1.0")
+
+CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
+PROJECT(SharemindLibDbCommon VERSION 0.1.0 LANGUAGES CXX)
 
 INCLUDE("${CMAKE_CURRENT_SOURCE_DIR}/config.local" OPTIONAL)
 INCLUDE("${CMAKE_CURRENT_BINARY_DIR}/config.local" OPTIONAL)
 
-INSTALL(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/src/"
-        DESTINATION "include/sharemind/dbcommon"
-        FILES_MATCHING PATTERN "*.h")
+FIND_PACKAGE(SharemindCMakeHelpers REQUIRED)
 
-SET(SHAREMIND_LIBDBCOMMON_INSTALL_INCLUDE_DIRS
-    "${CMAKE_INSTALL_PREFIX}/include")
-SET(SHAREMIND_LIBDBCOMMON_INSTALL_DEFINITIONS "-D__STDC_LIMIT_MACROS")
-SET(SHAREMIND_LIBDBCOMMON_INSTALL_LIBRARIES "")
-CONFIGURE_FILE(
-    "${CMAKE_CURRENT_SOURCE_DIR}/SharemindLibDbCommonConfig.cmake.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/SharemindLibDbCommonConfig.cmake" @ONLY)
-INSTALL(FILES "${CMAKE_CURRENT_BINARY_DIR}/SharemindLibDbCommonConfig.cmake"
-        DESTINATION "lib/SharemindLibDbCommon")
-CONFIGURE_FILE(
-    "${CMAKE_CURRENT_SOURCE_DIR}/SharemindLibDbCommonConfigVersion.cmake.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/SharemindLibDbCommonConfigVersion.cmake" @ONLY)
-INSTALL(FILES "${CMAKE_CURRENT_BINARY_DIR}/SharemindLibDbCommonConfigVersion.cmake"
-        DESTINATION "lib/SharemindLibDbCommon")
+SharemindSetProjectVersion()
+
+
+# Headers:
+FILE(GLOB_RECURSE SharemindLibDbCommon_HEADERS
+     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h")
+ADD_CUSTOM_TARGET("include_SharemindLibDbCommon_HEADERS_in_IDE"
+                  SOURCES ${SharemindLibDbCommon_HEADERS})
+INSTALL(FILES ${SharemindLibDbCommon_HEADERS}
+        DESTINATION "include/sharemind/dbcommon"
+        COMPONENT "dev")
+
+
+# Install CMake files:
+SharemindNewUniqueList(SharemindLibDbCommon_INSTALL_LINK_LIBRARIES)
+SharemindNewUniqueList(SharemindLibDbCommon_INSTALL_INCLUDE_DIRS
+    "${CMAKE_INSTALL_PREFIX}/include"
+)
+SharemindNewUniqueList(SharemindLibDbCommon_INSTALL_DEFINITIONS
+    "-D__STDC_LIMIT_MACROS"
+)
+SharemindUseCMakeFindFiles()
+
+
+# Packaging:
+SharemindSetupPackaging()
+SharemindAddComponentPackage("dev"
+    NAME "libsharemind-dbcommon-dev"
+    DESCRIPTION "Sharemind DB common library development headers"
+    DEB_SECTION "libdevel"
+)
+SharemindPackagingFinalize()

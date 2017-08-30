@@ -6,7 +6,7 @@
 # code is subject to the appropriate license agreement.
 #
 
-SET(PACKAGE_VERSION "@SHAREMIND_LIBDBCOMMON_VERSION@")
+SET(PACKAGE_VERSION "@SharemindLibDbCommon_VERSION@")
 IF(NOT SharemindLibDbCommon_QUIET)
     MESSAGE(STATUS "Sharemind DB common library version: ${PACKAGE_VERSION}")
 ENDIF()
