@@ -29,14 +29,12 @@ INSTALL(FILES ${SharemindLibDbCommon_HEADERS}
 
 
 # Install CMake files:
-SharemindNewUniqueList(SharemindLibDbCommon_INSTALL_LINK_LIBRARIES)
-SharemindNewUniqueList(SharemindLibDbCommon_INSTALL_INCLUDE_DIRS
-    "${CMAKE_INSTALL_PREFIX}/include"
+SharemindCreateCMakeFindFiles(
+    INCLUDE_DIRS
+        "${CMAKE_INSTALL_PREFIX}/include"
+    DEFINITIONS
+        "-D__STDC_LIMIT_MACROS"
 )
-SharemindNewUniqueList(SharemindLibDbCommon_INSTALL_DEFINITIONS
-    "-D__STDC_LIMIT_MACROS"
-)
-SharemindUseCMakeFindFiles()
 
 
 # Packaging:
