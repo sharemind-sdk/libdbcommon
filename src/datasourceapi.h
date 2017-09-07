@@ -44,8 +44,6 @@ typedef SharemindDataSource_ SharemindDataSource;
 *******************************************************************************/
 
 struct SharemindDataSourceManager_ {
-    SHAREMIND_ICONST void * SHAREMIND_ICONST internal;
-
     SharemindDataSource * (*get_source)(SharemindDataSourceManager * mgr, const char * name);
 };
 
@@ -54,8 +52,6 @@ struct SharemindDataSourceManager_ {
 *******************************************************************************/
 
 struct SharemindDataSource_ {
-    SHAREMIND_ICONST void * SHAREMIND_ICONST internal;
-
     const char * (* name)(SharemindDataSource * src);
     const char * (* module)(SharemindDataSource * src);
     const char * (* conf)(SharemindDataSource * src);
