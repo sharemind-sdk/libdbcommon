@@ -20,14 +20,6 @@
 #ifndef SHAREMIND_DBCOMMON_DATASOURCEAPI_H
 #define SHAREMIND_DBCOMMON_DATASOURCEAPI_H
 
-#ifndef SHAREMIND_ICONST
-#ifdef SHAREMIND_INTERNAL_
-#define SHAREMIND_ICONST
-#else
-#define SHAREMIND_ICONST const
-#endif
-#endif /* SHAREMIND_ICONST */
-
 
 #ifdef __cplusplus
 extern "C" {
