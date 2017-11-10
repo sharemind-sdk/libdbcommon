@@ -27,9 +27,9 @@ extern "C" {
 
 /** Forward declarations: */
 struct SharemindDataSourceManager_;
-typedef SharemindDataSourceManager_ SharemindDataSourceManager;
+typedef struct SharemindDataSourceManager_ SharemindDataSourceManager;
 struct SharemindDataSource_;
-typedef SharemindDataSource_ SharemindDataSource;
+typedef struct SharemindDataSource_ SharemindDataSource;
 
 /*******************************************************************************
     SharemindDataSourceManager
