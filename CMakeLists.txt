@@ -19,9 +19,8 @@ FIND_PACKAGE(SharemindCMakeHelpers 1.6 REQUIRED)
 # Headers:
 FILE(GLOB_RECURSE SharemindLibDbCommon_HEADERS
      "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h")
-ADD_CUSTOM_TARGET("include_SharemindLibDbCommon_HEADERS_in_IDE"
-                  SOURCES ${SharemindLibDbCommon_HEADERS})
-SharemindAddInterfaceLibrary(LibDbCommon)
+SharemindAddInterfaceLibrary(LibDbCommon
+    EXPOSE_FILES ${SharemindLibDbCommon_HEADERS})
 TARGET_INCLUDE_DIRECTORIES(LibDbCommon
     INTERFACE
         # $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src> # TODO
